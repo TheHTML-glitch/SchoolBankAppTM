@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@SchoolBank</title>
+    <style>
+        body {
+            background-color: #ff8c00; /* Dark orange */
+            font-family: 'Courier New', monospace;
+            color: white;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3em;
+            margin-top: 50px;
+            font-weight: bold;
+        }
+        .form-container {
+            margin: 20px auto;
+            width: 50%;
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        input[type="text"], input[type="password"], input[type="submit"], input[type="number"] {
+            font-family: monospace;
+            padding: 10px;
+            margin: 10px;
+            font-size: 1.1em;
+            width: 80%;
+        }
+        input[type="submit"] {
+            background-color: #ff8c00;
+            color: white;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .box {
+            background-color: black;
+            padding: 20px;
+            margin: 50px auto;
+            border-radius: 10px;
+            width: 50%;
+            display: none; /* Hidden by default */
+        }
+        .box h2 {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .logout {
+            margin-top: 30px;
+            font-size: 1.1em;
+            cursor: pointer;
+            color: #ff8c00; /* Dark orange */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to @SchoolBank</h1>
+
+    <!-- Sign-up and Login forms -->
+    <div class="form-container">
+        <h2>Sign Up / Login</h2>
+        <p class="note">Note: Your username should be your name</p>
+        <form id="authForm">
+            <input type="text" id="username" placeholder="Enter your name (username)" required><br>
+            <input type="password" id="password" placeholder="Create a password" required><br>
+            <input type="text" id="role" placeholder="Role (student/teacher)" required><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="box" id="dashboard">
+        <h2 id="dashboardTitle"></h2>
+        <p id="pointsInfo"></p>
+        <div id="teacherControls" style="display: none;">
+            <h3>Detect and Add Points</h3>
+            <form id="pointsForm">
+                <input type="text" id="studentUsername" placeholder="Student Username" required><br>
+                <input type="number" id="pointsChange" placeholder="Add or Deduct Points" required><br>
+                <input type="submit" value="Update Points">
+            </form>
+        </div>
+        <p class="logout" onclick="logout()">Logout</p>
+    </div>
+
+    <script>
+        const authForm = document.getElementById('authForm');
+        const dashboard = document.getElementById('dashboard');
+        const dashboardTitle = document.getElementById('dashboardTitle');
+        const pointsInfo = document.getElementById('pointsInfo');
+        const teacherControls = document.getElementById('teacherControls');
+
+        let defaultPoints = 100;
+        let userRole = '';
+
+        authForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            userRole = document.getElementById('role').value.toLowerCase();
+
+            // Simulating successful login or sign up
+            dashboard.style.display = 'block';
+            if (userRole === 'student') {
+                dashboardTitle.textContent = `Welcome, ${username}`;
+                pointsInfo.textContent = `Your Default Points: ${defaultPoints} (Monthly Points: +100)`;
+                teacherControls.style.display = 'none';
+            } else if (userRole === 'teacher') {
+                dashboardTitle.textContent = `Welcome, Teacher ${username}`;
+                pointsInfo.textContent = `You can manage student points.`;
+                teacherControls.style.display = 'block';
+            }
+        });
+
+        document.getElementById('pointsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const studentUsername = document.getElementById('studentUsername').value;
+            const pointsChange = parseInt(document.getElementById('pointsChange').value);
+            alert(`Updated points for ${studentUsername}: ${pointsChange}`);
+        });
+
+        function logout() {
+            dashboard.style.display = 'none';
+            authForm.reset();
+        }
+    </script>
+
+</body>
+</html>
